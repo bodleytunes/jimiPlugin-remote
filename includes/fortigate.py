@@ -1,6 +1,8 @@
 from paramiko import SSHClient, AutoAddPolicy
 import time
 import re
+import os
+from pathlib import Path
 
 class fortigate():
 
@@ -70,6 +72,19 @@ class fortigate():
         # Not supported!
         self.error = "Not supported"
         return False
+
+    def download_config(self, command, args=[], elevate=False, runAs=None, timeout=None, dstFolder=None):
+        # Todo
+        self.channel.send("{0}{1}".format(command,"\n"))
+        # receive config
+        output = self.recv()
+        # create dirs 
+        Path(dstFolder).mkdir(parents=True, exist_ok=True)
+        # create file
+        file = open(os.path.join(dstFolder, f'{self.deviceHostname}-{self.host}.cfg'), 'w+')
+        file.write(output)
+        file.close()
+        return (0, "")
 
     def __del__(self):
         self.disconnect()

@@ -175,6 +175,38 @@ class _remoteCommand(action._action):
         else:
             return {"result" : False, "rc" : 403, "msg" : "No connection found"}
 
+# todo 
+class _remoteDownloadConfig(action._action):
+    command = str()
+    elevate = bool()
+    runAs = str()
+    timeout = 300
+    dstFolder = str()
+    deviceModel = str()
+    
+    def doAction(self,data):
+        command = helpers.evalString(self.command,{"data" : data["flowData"]})
+        try:
+            client = data["eventData"]["remote"]["client"]
+        except KeyError:
+            client = None
+        # check device type
+        if self.deviceModel.upper() == "FORTIGATE":
+            self.command = "show full-configuration"
+        # set dest folder sane defaults
+        if self.dstFolder == None or self.dstFolder == "":
+            self.dstFolder = "/shared/data/storage/firewall-configs/snapshots/configs"
+        if client:
+            exitCode, errors = client.download_config(command,elevate=self.elevate,runAs=self.runAs,timeout=self.timeout,dstFolder=self.dstFolder)
+            
+            if exitCode != None:
+                return {"result" : True, "rc" : exitCode, "msg" : "Command succesfull", "data" : "config saved!", "errors" : errors}
+            else:
+                return {"result" : False, "rc" : 255, "msg" : client.error, "data" : "", "errors" : ""}
+        else:
+            return {"result" : False, "rc" : 403, "msg" : "No connection found"}
+
+
 class _remoteReboot(action._action):
     timeout = int()
 
@@ -200,6 +232,7 @@ class _remoteDownload(action._action):
     localFile = str()
     createMissingFolders = bool()
     useStorage = bool()
+
 
     def doAction(self,data):
         remoteFile = helpers.evalString(self.remoteFile,{"data" : data["flowData"]})
