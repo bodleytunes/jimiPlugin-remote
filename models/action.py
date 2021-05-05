@@ -180,7 +180,7 @@ class _remoteDownloadConfig(action._action):
     command = str()
     elevate = bool()
     runAs = str()
-    timeout = 300
+    timeout = 60
     dstFolder = str()
     deviceModel = str()
     
@@ -190,9 +190,6 @@ class _remoteDownloadConfig(action._action):
             client = data["eventData"]["remote"]["client"]
         except KeyError:
             client = None
-        # check device type
-        if self.deviceModel.upper() == "FORTIGATE":
-            self.command = "show full-configuration"
         # set dest folder sane defaults
         if self.dstFolder == None or self.dstFolder == "":
             self.dstFolder = "/shared/data/storage/firewall-configs/snapshots/configs"
