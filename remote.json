@@ -1,0 +1,122 @@
+{
+    "name": "remote",
+    "author": "jmc",
+    "version": 1.0,
+    "categories": [
+        "remote",
+        "servers",
+        "networks",
+        "configs",
+        "configuration",
+        "backups",
+    ],
+    "description": "Remote Operations",
+    "icon": null,
+    "requirements": {
+        "jimi_min_version": null,
+        "jimi_max_version": null,
+        "plugins": []
+    },
+    "collections": {},
+    "triggers": {},
+    "actions": {
+        "remoteDownloadConfig": {
+            "display_name": "remoteDownloadConfig",
+            "className": "_remoteDownloadConfig",
+            "class_location": "models.action",
+            "description": "Run command to download config from network device and save to folder",
+            "fields": [
+                {
+                    "schema_item": "command",
+                    "schema_value": "command",
+                    "type": "input",
+                    "label": "command",
+                    "description": "Command to run on remote device (e.g. 'show run' )",
+                    "required": true,
+                    "jimi_syntax": false
+                },
+                {
+                    "schema_item": "elevate",
+                    "schema_value": "elevate",
+                    "type": "input",
+                    "label": "elevate",
+                    "description": "elevate",
+                    "required": true,
+                    "jimi_syntax": false
+                },
+                {
+                    "schema_item": "runAs",
+                    "schema_value": "runAs",
+                    "type": "input",
+                    "label": "runAs",
+                    "description": "runAs User",
+                    "required": false,
+                    "jimi_syntax": false
+                },
+                {
+                    "schema_item": "timeout",
+                    "schema_value": "timeout",
+                    "type": "input",
+                    "label": "timeout",
+                    "description": "timeout in seconds",
+                    "required": true,
+                    "jimi_syntax": false
+                },
+                {
+                    "schema_item": "dstFolder",
+                    "schema_value": "dstFolder",
+                    "type": "input",
+                    "label": "Destination folder",
+                    "description": "Destination folder to save configs to",
+                    "required": true,
+                    "jimi_syntax": false
+                },
+                {
+                    "schema_item": "deviceModel",
+                    "schema_value": "deviceModel",
+                    "type": "input",
+                    "label": "deviceModel",
+                    "description": "timeout in seconds",
+                    "required": false,
+                    "jimi_syntax": false
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Determines if the given action was successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Action completed successfully."
+                        },
+                        "False": {
+                            "description": "Action was unsuccessful."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the provided rc field value.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "(number)": {
+                            "description": "The integer provided within the rc field."
+                        }
+                    }
+                },
+                "data": {
+                    "description": "Outputs any returned data from the executed process",
+                    "type": "text",
+                    "always_present": false,
+                    "values": {
+                        "(string)": {
+                            "description": "Clone Operations Complete"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "settings": {}
+}
