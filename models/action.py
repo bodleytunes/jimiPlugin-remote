@@ -1,7 +1,7 @@
 from core import settings, helpers, auth
 from core.models import action
 from plugins.remote.includes import linux, windows, fortigate
-
+import re
 import jimi
 
 
@@ -12,13 +12,23 @@ class _remoteConnectLinux(action._action):
     password = str()
     isPortForward = bool()
     port_forward = str()
+<<<<<<< HEAD
 
     def doAction(self, data):
         host = helpers.evalString(self.host, {"data": data["flowData"]})
         user = helpers.evalString(self.user, {"data": data["flowData"]})
         port = helpers.evalString(self.port_forward, {"data": data["flowData"]})
+=======
+    
+    def doAction(self,data):
+        host = helpers.evalString(self.host,{"data" : data["flowData"]})
+        user = helpers.evalString(self.user,{"data" : data["flowData"]})
+        port = helpers.evalString(self.port_forward,{"data" : data["flowData"]})
+>>>>>>> f0703476d5833c1dcfec0d6aed35cd7761288c2b
         if self.password.startswith("ENC"):
             password = auth.getPasswordFromENC(self.password)
+        elif "%%" in self.password:
+            password = helpers.evalString(self.password,{"data" : data["flowData"]})
         else:
             password = ""
         keyfile = helpers.evalString(self.keyfile, {"data": data["flowData"]})
@@ -63,8 +73,13 @@ class _remoteConnectLinux(action._action):
                 "msg": "Connection failed - {0}".format(client.error),
             }
 
+<<<<<<< HEAD
     def setAttribute(self, attr, value, sessionData=None):
         if attr == "password" and not value.startswith("ENC "):
+=======
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "password" and not value.startswith("ENC ") and not re.match(".*%%.*%%",value):
+>>>>>>> f0703476d5833c1dcfec0d6aed35cd7761288c2b
             self.password = "ENC {0}".format(auth.getENCFromPassword(value))
             return True
         return super(_remoteConnectLinux, self).setAttribute(
@@ -115,10 +130,20 @@ class _remoteConnectWindows(action._action):
     user = str()
     password = str()
 
+<<<<<<< HEAD
     def doAction(self, data):
         host = helpers.evalString(self.host, {"data": data["flowData"]})
         user = helpers.evalString(self.user, {"data": data["flowData"]})
         password = auth.getPasswordFromENC(self.password)
+=======
+    def doAction(self,data):
+        host = helpers.evalString(self.host,{"data" : data["flowData"]})
+        user = helpers.evalString(self.user,{"data" : data["flowData"]})
+        if self.password.startswith("ENC"):
+            password = auth.getPasswordFromENC(self.password)
+        elif "%%" in self.password:
+            password = helpers.evalString(self.password,{"data" : data["flowData"]})
+>>>>>>> f0703476d5833c1dcfec0d6aed35cd7761288c2b
 
         client = windows.windows(host, user, password)
         if client.client != None:
@@ -131,8 +156,13 @@ class _remoteConnectWindows(action._action):
                 "msg": "Connection failed - {0}".format(client.error),
             }
 
+<<<<<<< HEAD
     def setAttribute(self, attr, value, sessionData=None):
         if attr == "password" and not value.startswith("ENC "):
+=======
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "password" and not value.startswith("ENC ") and not re.match(".*%%.*%%",value):
+>>>>>>> f0703476d5833c1dcfec0d6aed35cd7761288c2b
             self.password = "ENC {0}".format(auth.getENCFromPassword(value))
             return True
         return super(_remoteConnectWindows, self).setAttribute(
@@ -157,6 +187,8 @@ class _remoteConnectFortigate(action._action):
         user = helpers.evalString(self.user, {"data": data["flowData"]})
         if self.password.startswith("ENC"):
             password = auth.getPasswordFromENC(self.password)
+        elif "%%" in self.password:
+            password = helpers.evalString(self.password,{"data" : data["flowData"]})
         else:
             password = ""
 
@@ -179,8 +211,13 @@ class _remoteConnectFortigate(action._action):
                 "msg": "Connection failed - {0}".format(client.error),
             }
 
+<<<<<<< HEAD
     def setAttribute(self, attr, value, sessionData=None):
         if attr == "password" and not value.startswith("ENC "):
+=======
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "password" and not value.startswith("ENC ") and not re.match(".*%%.*%%",value):
+>>>>>>> f0703476d5833c1dcfec0d6aed35cd7761288c2b
             self.password = "ENC {0}".format(auth.getENCFromPassword(value))
             return True
         return super(_remoteConnectFortigate, self).setAttribute(
