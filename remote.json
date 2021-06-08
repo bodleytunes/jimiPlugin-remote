@@ -1,16 +1,9 @@
 {
     "name": "remote",
-    "author": "jmc",
-    "version": 1.0,
-    "categories": [
-        "remote",
-        "servers",
-        "networks",
-        "configs",
-        "configuration",
-        "backups",
-    ],
-    "description": "Remote Operations",
+    "author": "z1p, b1scuit-thi3f, TerrifiedBug, TheCypherGoat",
+    "version": 1.2,
+    "categories": [],
+    "description": "",
     "icon": null,
     "requirements": {
         "jimi_min_version": null,
@@ -18,105 +11,760 @@
         "plugins": []
     },
     "collections": {},
-    "triggers": {},
-    "actions": {
-        "remoteDownloadConfig": {
-            "display_name": "remoteDownloadConfig",
-            "className": "_remoteDownloadConfig",
-            "class_location": "models.action",
-            "description": "Run command to download config from network device and save to folder",
+    "triggers": {
+        "remotePullWinEvents": {
+            "display_name": "remotePullWinEvents",
+            "className": "_remotePullWinEvents",
+            "class_location": "models.trigger",
+            "description": "",
             "fields": [
                 {
-                    "schema_item": "command",
-                    "schema_value": "command",
+                    "schema_item": "server",
+                    "schema_value": "server",
                     "type": "input",
-                    "label": "command",
-                    "description": "Command to run on remote device (e.g. 'show run' )",
-                    "required": true,
-                    "jimi_syntax": false
+                    "label": "server",
+                    "description": ""
                 },
                 {
-                    "schema_item": "elevate",
-                    "schema_value": "elevate",
+                    "schema_item": "eventName",
+                    "schema_value": "eventName",
                     "type": "input",
-                    "label": "elevate",
-                    "description": "elevate",
-                    "required": true,
-                    "jimi_syntax": false
+                    "label": "eventName",
+                    "description": ""
                 },
                 {
-                    "schema_item": "runAs",
-                    "schema_value": "runAs",
+                    "schema_item": "username",
+                    "schema_value": "username",
                     "type": "input",
-                    "label": "runAs",
-                    "description": "runAs User",
-                    "required": false,
-                    "jimi_syntax": false
+                    "label": "username",
+                    "description": ""
                 },
                 {
-                    "schema_item": "timeout",
-                    "schema_value": "timeout",
+                    "schema_item": "password",
+                    "schema_value": "password",
                     "type": "input",
-                    "label": "timeout",
-                    "description": "timeout in seconds",
-                    "required": true,
-                    "jimi_syntax": false
+                    "label": "password",
+                    "description": ""
                 },
                 {
-                    "schema_item": "dstFolder",
-                    "schema_value": "dstFolder",
+                    "schema_item": "lastPull",
+                    "schema_value": "lastPull",
                     "type": "input",
-                    "label": "Destination folder",
-                    "description": "Destination folder to save configs to",
-                    "required": true,
-                    "jimi_syntax": false
+                    "label": "lastPull",
+                    "description": ""
                 },
                 {
-                    "schema_item": "deviceModel",
-                    "schema_value": "deviceModel",
+                    "schema_item": "maxEvents",
+                    "schema_value": "maxEvents",
                     "type": "input",
-                    "label": "deviceModel",
-                    "description": "timeout in seconds",
-                    "required": false,
-                    "jimi_syntax": false
+                    "label": "maxEvents",
+                    "description": ""
                 }
             ],
             "data_out": {
                 "result": {
-                    "description": "Determines if the given action was successful.",
+                    "description": "Returns True when successful.",
                     "type": "boolean",
                     "always_present": true,
                     "values": {
                         "True": {
-                            "description": "Action completed successfully."
+                            "description": "Successful."
                         },
                         "False": {
-                            "description": "Action was unsuccessful."
+                            "description": "Failure."
                         }
                     }
                 },
                 "rc": {
-                    "description": "Returns the provided rc field value.",
+                    "description": "Returns the exit code for the action.",
                     "type": "number",
                     "always_present": true,
                     "values": {
-                        "(number)": {
-                            "description": "The integer provided within the rc field."
-                        }
-                    }
-                },
-                "data": {
-                    "description": "Outputs any returned data from the executed process",
-                    "type": "text",
-                    "always_present": false,
-                    "values": {
-                        "(string)": {
-                            "description": "Clone Operations Complete"
+                        "0": {
+                            "description": "Successful."
                         }
                     }
                 }
             }
         }
     },
-    "settings": {}
+    "actions": {
+        "remoteConnectLinux": {
+            "display_name": "remoteConnectLinux",
+            "className": "_remoteConnectLinux",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "host",
+                    "schema_value": "host",
+                    "type": "input",
+                    "label": "host",
+                    "description": ""
+                },
+                {
+                    "schema_item": "user",
+                    "schema_value": "user",
+                    "type": "input",
+                    "label": "user",
+                    "description": ""
+                },
+                {
+                    "schema_item": "keyfile",
+                    "schema_value": "keyfile",
+                    "type": "input",
+                    "label": "keyfile",
+                    "description": ""
+                },
+                {
+                    "schema_item": "password",
+                    "schema_value": "password",
+                    "type": "input",
+                    "label": "password",
+                    "description": ""
+                },
+                {
+                    "schema_item": "isPortForward",
+                    "schema_value": "isPortForward",
+                    "type": "checkbox",
+                    "label": "isPortForward",
+                    "description": ""
+                },
+                {
+                    "schema_item": "port_forward",
+                    "schema_value": "port_forward",
+                    "type": "input",
+                    "label": "port_forward",
+                    "description": ""
+                },
+                {
+                    "schema_item": "host",
+                    "schema_value": "host",
+                    "type": "input",
+                    "label": "host",
+                    "description": ""
+                },
+                {
+                    "schema_item": "user",
+                    "schema_value": "user",
+                    "type": "input",
+                    "label": "user",
+                    "description": ""
+                },
+                {
+                    "schema_item": "port",
+                    "schema_value": "port",
+                    "type": "input",
+                    "label": "port",
+                    "description": ""
+                },
+                {
+                    "schema_item": "password",
+                    "schema_value": "password",
+                    "type": "input",
+                    "label": "password",
+                    "description": ""
+                },
+                {
+                    "schema_item": "password",
+                    "schema_value": "password",
+                    "type": "input",
+                    "label": "password",
+                    "description": ""
+                },
+                {
+                    "schema_item": "password",
+                    "schema_value": "password",
+                    "type": "input",
+                    "label": "password",
+                    "description": ""
+                },
+                {
+                    "schema_item": "keyfile",
+                    "schema_value": "keyfile",
+                    "type": "input",
+                    "label": "keyfile",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteLinuxStartPortForward": {
+            "display_name": "remoteLinuxStartPortForward",
+            "className": "_remoteLinuxStartPortForward",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteLinuxStopPortForward": {
+            "display_name": "remoteLinuxStopPortForward",
+            "className": "_remoteLinuxStopPortForward",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteConnectWindows": {
+            "display_name": "remoteConnectWindows",
+            "className": "_remoteConnectWindows",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "host",
+                    "schema_value": "host",
+                    "type": "input",
+                    "label": "host",
+                    "description": ""
+                },
+                {
+                    "schema_item": "user",
+                    "schema_value": "user",
+                    "type": "input",
+                    "label": "user",
+                    "description": ""
+                },
+                {
+                    "schema_item": "password",
+                    "schema_value": "password",
+                    "type": "input",
+                    "label": "password",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteConnectFortigate": {
+            "display_name": "remoteConnectFortigate",
+            "className": "_remoteConnectFortigate",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "host",
+                    "schema_value": "host",
+                    "type": "input",
+                    "label": "host",
+                    "description": ""
+                },
+                {
+                    "schema_item": "port",
+                    "schema_value": "port",
+                    "type": "input",
+                    "label": "port",
+                    "description": ""
+                },
+                {
+                    "schema_item": "deviceHostname",
+                    "schema_value": "deviceHostname",
+                    "type": "input",
+                    "label": "deviceHostname",
+                    "description": ""
+                },
+                {
+                    "schema_item": "user",
+                    "schema_value": "user",
+                    "type": "input",
+                    "label": "user",
+                    "description": ""
+                },
+                {
+                    "schema_item": "password",
+                    "schema_value": "password",
+                    "type": "input",
+                    "label": "password",
+                    "description": ""
+                },
+                {
+                    "schema_item": "maxRecvTime",
+                    "schema_value": "maxRecvTime",
+                    "type": "input",
+                    "label": "maxRecvTime",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteDisconnect": {
+            "display_name": "remoteDisconnect",
+            "className": "_remoteDisconnect",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "client",
+                    "schema_value": "client",
+                    "type": "input",
+                    "label": "client",
+                    "description": ""
+                },
+                {
+                    "schema_item": "client",
+                    "schema_value": "client",
+                    "type": "input",
+                    "label": "client",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteCommand": {
+            "display_name": "remoteCommand",
+            "className": "_remoteCommand",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "command",
+                    "schema_value": "command",
+                    "type": "input",
+                    "label": "command",
+                    "description": ""
+                },
+                {
+                    "schema_item": "elevate",
+                    "schema_value": "elevate",
+                    "type": "checkbox",
+                    "label": "elevate",
+                    "description": ""
+                },
+                {
+                    "schema_item": "runAs",
+                    "schema_value": "runAs",
+                    "type": "input",
+                    "label": "runAs",
+                    "description": ""
+                },
+                {
+                    "schema_item": "timeout",
+                    "schema_value": "timeout",
+                    "type": "input",
+                    "label": "timeout",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteReboot": {
+            "display_name": "remoteReboot",
+            "className": "_remoteReboot",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "timeout",
+                    "schema_value": "timeout",
+                    "type": "input",
+                    "label": "timeout",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteDownload": {
+            "display_name": "remoteDownload",
+            "className": "_remoteDownload",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "remoteFile",
+                    "schema_value": "remoteFile",
+                    "type": "input",
+                    "label": "remoteFile",
+                    "description": ""
+                },
+                {
+                    "schema_item": "localFile",
+                    "schema_value": "localFile",
+                    "type": "input",
+                    "label": "localFile",
+                    "description": ""
+                },
+                {
+                    "schema_item": "createMissingFolders",
+                    "schema_value": "createMissingFolders",
+                    "type": "checkbox",
+                    "label": "createMissingFolders",
+                    "description": ""
+                },
+                {
+                    "schema_item": "useStorage",
+                    "schema_value": "useStorage",
+                    "type": "checkbox",
+                    "label": "useStorage",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        },
+        "remoteUpload": {
+            "display_name": "remoteUpload",
+            "className": "_remoteUpload",
+            "class_location": "models.action",
+            "description": "",
+            "fields": [
+                {
+                    "schema_item": "remoteFile",
+                    "schema_value": "remoteFile",
+                    "type": "input",
+                    "label": "remoteFile",
+                    "description": ""
+                },
+                {
+                    "schema_item": "localFile",
+                    "schema_value": "localFile",
+                    "type": "input",
+                    "label": "localFile",
+                    "description": ""
+                },
+                {
+                    "schema_item": "useStorage",
+                    "schema_value": "useStorage",
+                    "type": "checkbox",
+                    "label": "useStorage",
+                    "description": ""
+                }
+            ],
+            "data_out": {
+                "result": {
+                    "description": "Returns True when successful.",
+                    "type": "boolean",
+                    "always_present": true,
+                    "values": {
+                        "True": {
+                            "description": "Successful."
+                        },
+                        "False": {
+                            "description": "Failure."
+                        }
+                    }
+                },
+                "rc": {
+                    "description": "Returns the exit code for the action.",
+                    "type": "number",
+                    "always_present": true,
+                    "values": {
+                        "0": {
+                            "description": "Successful."
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "remoteDownloadConfig": {
+        "display_name": "remoteDownloadConfig",
+        "className": "_remoteDownloadConfig",
+        "class_location": "models.action",
+        "description": "Run command to download config from network device and save to folder",
+        "fields": [
+            {
+                "schema_item": "command",
+                "schema_value": "command",
+                "type": "input",
+                "label": "command",
+                "description": "Command to run on remote device (e.g. 'show run' )",
+                "required": true,
+                "jimi_syntax": false
+            },
+            {
+                "schema_item": "elevate",
+                "schema_value": "elevate",
+                "type": "input",
+                "label": "elevate",
+                "description": "elevate",
+                "required": true,
+                "jimi_syntax": false
+            },
+            {
+                "schema_item": "runAs",
+                "schema_value": "runAs",
+                "type": "input",
+                "label": "runAs",
+                "description": "runAs User",
+                "required": false,
+                "jimi_syntax": false
+            },
+            {
+                "schema_item": "timeout",
+                "schema_value": "timeout",
+                "type": "input",
+                "label": "timeout",
+                "description": "timeout in seconds",
+                "required": true,
+                "jimi_syntax": false
+            },
+            {
+                "schema_item": "dstFolder",
+                "schema_value": "dstFolder",
+                "type": "input",
+                "label": "Destination folder",
+                "description": "Destination folder to save configs to",
+                "required": true,
+                "jimi_syntax": false
+            },
+            {
+                "schema_item": "deviceModel",
+                "schema_value": "deviceModel",
+                "type": "input",
+                "label": "deviceModel",
+                "description": "timeout in seconds",
+                "required": false,
+                "jimi_syntax": false
+            }
+        ],
+        "data_out": {
+            "result": {
+                "description": "Determines if the given action was successful.",
+                "type": "boolean",
+                "always_present": true,
+                "values": {
+                    "True": {
+                        "description": "Action completed successfully."
+                    },
+                    "False": {
+                        "description": "Action was unsuccessful."
+                    }
+                }
+            },
+            "rc": {
+                "description": "Returns the provided rc field value.",
+                "type": "number",
+                "always_present": true,
+                "values": {
+                    "(number)": {
+                        "description": "The integer provided within the rc field."
+                    }
+                }
+            },
+            "data": {
+                "description": "Outputs any returned data from the executed process",
+                "type": "text",
+                "always_present": false,
+                "values": {
+                    "(string)": {
+                        "description": "Clone Operations Complete"
+                    }
+                }
+            }
+        }
+    }
 }
